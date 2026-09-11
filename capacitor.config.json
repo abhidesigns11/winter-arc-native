@@ -2,10 +2,6 @@
   "appId": "com.abhidesigns.winterarc",
   "appName": "Winter Arc",
   "webDir": "www",
-  "server": {
-    "url": "https://abhidesigns-winter-arc.netlify.app",
-    "cleartext": false
-  },
   "android": {
     "allowMixedContent": false
   }
