@@ -168,9 +168,90 @@
 
     .quest-progress-track { background: rgba(0,0,0,0.5); }
     .quest-progress-fill { background: linear-gradient(90deg, #06b6d4, #3b82f6); transition: width 0.4s ease; }
+
+    /* ================= FRESH MULTI-PAGE APP SHELL ================= */
+    .app-page { display: none; }
+    .app-page.active { display: block; animation: pageIn .35s ease; }
+    @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    #appHeader { padding-top: calc(0.75rem + var(--safe-top)); }
+    #appMain { padding-bottom: calc(5.5rem + var(--safe-bottom)); }
+
+    .page-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; }
+
+    /* Bottom Nav (primary navigation on every breakpoint) */
+    #bottomNav {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      display: flex; justify-content: space-around; align-items: stretch;
+      background: rgba(10, 14, 22, 0.85);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: var(--safe-bottom);
+    }
+    .bn-btn {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px; padding: 10px 2px 8px; color: #566274; background: none; border: none; position: relative;
+      transition: color .2s ease;
+    }
+    .bn-btn i { font-size: 17px; }
+    .bn-btn span { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+    .bn-btn.active { color: #22d3ee; }
+    .bn-btn.active::before {
+      content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 26px; height: 2.5px; border-radius: 2px; background: linear-gradient(90deg,#22d3ee,#6366f1);
+      box-shadow: 0 0 10px rgba(34,211,238,.8);
+    }
+
+    /* Desktop side rail */
+    .side-nav-link.active { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.14); }
+
+    /* Hexagon rank wheel */
+    .hex-rank-wheel { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 12px; padding: 14px 4px 6px; }
+    .hex-node { width: 74px; text-align: center; }
+    .hex-shape {
+      width: 74px; height: 66px; margin: 0 auto;
+      clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0% 50%);
+      background: linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.14);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 20px; color: #475569;
+      transition: all .3s ease;
+    }
+    .hex-node.active .hex-shape {
+      color: #ecfeff;
+      background: linear-gradient(160deg, rgba(34,211,238,0.45), rgba(59,130,246,0.25));
+      border-color: rgba(103,232,249,0.85);
+      box-shadow: 0 0 22px rgba(34,211,238,.55), 0 0 46px rgba(59,130,246,.28);
+      animation: rankPulse 2.2s ease-in-out infinite;
+    }
+    .hex-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #64748b; margin-top: 5px; }
+    .hex-node.active .hex-label { color: #22d3ee; font-weight: 700; }
+
+    .rank-foot-card {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 16px;
+      background: rgba(0,0,0,0.45); border: 1px solid rgba(34,211,238,0.25);
+      border-radius: 20px; padding: 16px 18px; margin-top: 4px;
+    }
+    .rank-foot-item { display: flex; flex-direction: column; gap: 2px; font-family: 'JetBrains Mono', monospace; }
+    .rank-foot-item span { font-size: 9px; color: #64748b; letter-spacing: .1em; text-transform: uppercase; }
+    .rank-foot-item strong { font-size: 14px; color: #e2e8f0; font-weight: 800; }
+
+    /* Stat cards (Analytics page) */
+    .stat-card {
+      background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px; padding: 14px 16px; position: relative; overflow: hidden;
+    }
+    .stat-card .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: #64748b; }
+    .stat-card .stat-value { font-size: 22px; font-weight: 900; color: #fff; margin-top: 3px; }
+
+    /* Profile hunter card */
+    .profile-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+    .profile-row:last-child { border-bottom: none; }
+    .profile-row span:first-child { color: #64748b; }
   </style>
 </head>
-<body id="mainBody" class="bg-[#090c13] text-slate-100 font-sans min-h-screen transition-colors duration-500 flex">
+<body id="mainBody" class="bg-[#090c13] text-slate-100 font-sans min-h-screen transition-colors duration-500">
 
   <!-- AUTH GATE (Login / Sign Up) — flat "system window" style, matching the
        reference app's plain dark card rather than the glassmorphism used
@@ -236,155 +317,76 @@
 
   <!-- SIDE NAVBAR -->
   <div id="mainAppRoot" class="hidden">
-  <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 ios-glass z-50 rounded-none border-r border-y-0 border-l-0 border-white/10 flex flex-col justify-between p-5 transition-transform duration-300 -translate-x-full lg:translate-x-0">
-    <div class="space-y-6">
-      <div class="flex items-center gap-3 px-2">
-        <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 font-bold shadow-lg shadow-emerald-500/20">
-          <i class="fa-solid fa-fire text-lg"></i>
-        </div>
-        <div>
-          <h2 class="text-sm font-black tracking-wider text-white">WINTER ARC</h2>
-          <span class="text-[10px] font-mono text-emerald-400 tracking-widest uppercase">PWA & Realtime Sync</span>
-        </div>
-      </div>
 
-      <nav class="space-y-1.5 font-mono text-xs">
-        <a href="#section-hunter" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-white/10 text-white font-bold border border-white/10 transition-all">
-          <i class="fa-solid fa-shield-halved text-cyan-400 w-4"></i> Hunter Status
-        </a>
-        <a href="#section-quests" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-scroll text-cyan-400 w-4"></i> Daily Quests
-        </a>
-        <a href="#section-guild" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-users text-indigo-400 w-4"></i> Guild
-        </a>
-        <a href="#section-ranking" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-trophy text-amber-400 w-4"></i> Global Ranking
-        </a>
-        <a href="#section-quote" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-quote-left text-emerald-400 w-4"></i> Mindset Banner
-        </a>
-        <a href="#section-water" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-glass-water text-cyan-400 w-4"></i> Hydration Smart Hub
-        </a>
-        <a href="#section-alarms" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-clock-rotate-left text-amber-400 w-4"></i> Scheduled Reminders
-        </a>
-        <a href="#section-focus" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-clock text-cyan-400 w-4"></i> Live Focus Slot
-        </a>
-        <a href="#section-matrix" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-table-cells text-indigo-400 w-4"></i> 30-Day Matrix
-        </a>
-        <a href="#section-workout" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-dumbbell text-rose-400 w-4"></i> Workout Tracker
-        </a>
-        <a href="#section-history" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-chart-line text-emerald-400 w-4"></i> Daily Line Analytics
-        </a>
-        <a href="#section-sleep" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-moon text-purple-400 w-4"></i> Sleep Matrix
-        </a>
-        <a href="#section-notes" onclick="setActiveNav(this)" class="nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all">
-          <i class="fa-solid fa-pen-to-square text-amber-400 w-4"></i> Mindset Notes
-        </a>
-      </nav>
-    </div>
-
-    <div class="pt-4 border-t border-white/10 font-mono text-[11px] space-y-2">
-      <div class="flex justify-between items-center text-slate-400">
-        <span>Cloud Status:</span>
-        <strong id="dbSyncStatus" class="text-amber-400 font-bold">Connecting...</strong>
-      </div>
-      <div class="flex justify-between items-center text-slate-400">
-        <span>Today's Date:</span>
-        <strong id="sideTodayDate" class="text-emerald-400 font-bold">Day --</strong>
-      </div>
-      <div class="flex justify-between items-center text-slate-400">
-        <span>Water Hydration:</span>
-        <strong id="sideWaterProgress" class="text-cyan-400 font-bold">0.0 / 4.0L</strong>
-      </div>
-      <div class="flex justify-between items-center text-slate-400">
-        <span>Matrix Points:</span>
-        <strong id="sideMatrixPoints" class="text-emerald-400 font-bold">0</strong>
-      </div>
-      <div class="flex justify-between items-center text-slate-400">
-        <span>Hunter Rank:</span>
-        <strong id="sideRank" class="text-cyan-400 font-bold">E</strong>
-      </div>
-      <div class="flex justify-between items-center text-slate-400 pt-2 mt-1 border-t border-white/10">
-        <span class="truncate mr-2" id="sideHunterName">Guest Hunter</span>
-        <button onclick="handleLogout()" class="text-rose-400 hover:text-rose-300 font-bold shrink-0">
-          <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
-      </div>
-    </div>
-  </aside>
-
-  <!-- SIDEBAR MOBILE TOGGLE BUTTON -->
-  <button onclick="toggleSidebar()" class="lg:hidden fixed z-50 w-12 h-12 rounded-full crystal-btn crystal-btn-emerald flex items-center justify-center text-white shadow-2xl" style="bottom: calc(5.5rem + var(--safe-bottom)); right: calc(1.25rem + var(--safe-right));">
-    <i class="fa-solid fa-bars text-lg"></i>
-  </button>
-
-  <!-- MOBILE BOTTOM TAB BAR (reference-app style quick nav) -->
-  <nav id="bottomTabBar" class="lg:hidden fixed bottom-0 left-0 right-0 z-40 ios-glass rounded-none border-x-0 border-b-0 border-t border-white/10 flex items-stretch justify-around" style="padding-bottom: var(--safe-bottom);">
-    <button onclick="scrollToSection('section-quests')" class="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-slate-400 hover:text-cyan-300 transition-colors">
-      <i class="fa-solid fa-scroll text-base"></i>
-      <span class="text-[9px] font-mono font-bold uppercase">Quests</span>
-    </button>
-    <button onclick="scrollToSection('section-ranking')" class="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-slate-400 hover:text-amber-300 transition-colors">
-      <i class="fa-solid fa-trophy text-base"></i>
-      <span class="text-[9px] font-mono font-bold uppercase">Ranking</span>
-    </button>
-    <button onclick="scrollToSection('section-guild')" class="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-slate-400 hover:text-indigo-300 transition-colors">
-      <i class="fa-solid fa-users text-base"></i>
-      <span class="text-[9px] font-mono font-bold uppercase">Guild</span>
-    </button>
-    <button onclick="scrollToSection('section-hunter')" class="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-slate-400 hover:text-cyan-300 transition-colors">
-      <i class="fa-solid fa-user-ninja text-base"></i>
-      <span class="text-[9px] font-mono font-bold uppercase">Profile</span>
-    </button>
-  </nav>
-
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 lg:ml-64 min-w-0 pb-24 lg:pb-16">
-
-    <header class="ios-glass sticky top-0 z-40 px-4 lg:px-8 py-3.5 rounded-none border-x-0 border-t-0 border-b border-white/10">
-      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
-        <div class="flex items-center gap-3">
-          <div id="statusIcon" class="w-9 h-9 rounded-2xl bg-white/5 border border-white/20 flex items-center justify-center text-emerald-400 font-bold shadow-inner">
-            <i class="fa-solid fa-shield-halved"></i>
+    <!-- DESKTOP SIDE RAIL (mirrors the bottom nav on wide screens) -->
+    <aside id="sidebar" class="hidden lg:flex fixed top-0 left-0 h-full w-60 ios-glass z-50 rounded-none border-r border-y-0 border-l-0 border-white/10 flex-col justify-between p-5">
+      <div class="space-y-8">
+        <div class="flex items-center gap-3 px-1">
+          <div class="w-10 h-10 rounded-2xl bg-cyan-500/15 border border-cyan-400/40 flex items-center justify-center text-cyan-300 shadow-lg shadow-cyan-500/10">
+            <i class="fa-solid fa-bolt text-lg"></i>
           </div>
           <div>
-            <h1 class="text-base font-extrabold tracking-tight text-white flex items-center gap-2">
-              WINTER ARC HARDCORE TRACKER
-              <span id="punishmentBadge" class="hidden text-[10px] font-mono bg-rose-600 text-white px-2.5 py-0.5 rounded-full animate-pulse shadow-lg">PUNISHMENT ACTIVE (+5 REPS)</span>
-            </h1>
-            <p class="text-[11px] text-slate-400 font-mono tracking-wide">PWA App Wrapper & Realtime Sync</p>
-            <p id="nativeBridgeDiag" class="text-[10px] font-mono text-amber-400 mt-0.5">Checking native bridge…</p>
+            <h2 class="text-sm font-black tracking-wider text-white">WINTER ARC</h2>
+            <span class="text-[9px] font-mono text-cyan-400 tracking-widest uppercase">Hunter System</span>
           </div>
         </div>
-
-        <div class="flex items-center gap-3">
-          <button onclick="handleLogout()" class="text-[11px] font-mono font-bold text-rose-400 hover:text-rose-300 px-2 hidden sm:inline-block">
-            <i class="fa-solid fa-right-from-bracket mr-1"></i>Logout
+        <nav class="space-y-1.5 font-mono text-xs">
+          <button data-page="home" onclick="showPage('home')" class="side-nav-link active w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent transition-all text-left">
+            <i class="fa-solid fa-house text-cyan-400 w-4"></i> Home
           </button>
-          <div class="text-right font-mono text-xs px-3.5 py-1.5 bg-black/40 rounded-full border border-white/10 shadow-inner">
-            <span id="liveClock" class="font-bold text-emerald-400">00:00:00</span>
-          </div>
-          <button id="notifBtn" onclick="requestNotificationPermission(true)" class="crystal-btn px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold text-slate-200">
-            <i class="fa-solid fa-bell text-emerald-400 mr-1.5"></i> <span id="notifBtnText">Enable Alerts</span>
+          <button data-page="quests" onclick="showPage('quests')" class="side-nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent transition-all text-left">
+            <i class="fa-solid fa-scroll text-cyan-400 w-4"></i> Quests
           </button>
-          <button onclick="triggerPunishmentTest()" class="crystal-btn crystal-btn-danger px-3.5 py-1.5 rounded-full text-xs font-mono font-bold text-rose-300">
-            Test Penalty
+          <button data-page="rank" onclick="showPage('rank')" class="side-nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent transition-all text-left">
+            <i class="fa-solid fa-ranking-star text-amber-400 w-4"></i> Rank &amp; Guild
           </button>
-        </div>
+          <button data-page="stats" onclick="showPage('stats')" class="side-nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent transition-all text-left">
+            <i class="fa-solid fa-chart-line text-emerald-400 w-4"></i> Analytics
+          </button>
+          <button data-page="profile" onclick="showPage('profile')" class="side-nav-link w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-transparent transition-all text-left">
+            <i class="fa-solid fa-user-ninja text-slate-300 w-4"></i> Profile
+          </button>
+        </nav>
       </div>
-    </header>
+      <div class="text-[10px] font-mono text-slate-500 px-1">Hardcore Tracker · PWA</div>
+    </aside>
 
-    <div class="max-w-7xl mx-auto px-4 lg:px-8 mt-6 space-y-6">
+    <!-- MOBILE BOTTOM NAV -->
+    <nav id="bottomNav" class="lg:hidden">
+      <button class="bn-btn active" data-page="home" onclick="showPage('home')"><i class="fa-solid fa-house"></i><span>Home</span></button>
+      <button class="bn-btn" data-page="quests" onclick="showPage('quests')"><i class="fa-solid fa-scroll"></i><span>Quests</span></button>
+      <button class="bn-btn" data-page="rank" onclick="showPage('rank')"><i class="fa-solid fa-ranking-star"></i><span>Rank</span></button>
+      <button class="bn-btn" data-page="stats" onclick="showPage('stats')"><i class="fa-solid fa-chart-line"></i><span>Stats</span></button>
+      <button class="bn-btn" data-page="profile" onclick="showPage('profile')"><i class="fa-solid fa-user-ninja"></i><span>Profile</span></button>
+    </nav>
 
-      <!-- HUNTER STATUS PANEL -->
+    <main id="appMain" class="lg:ml-60 min-w-0">
+      <header id="appHeader" class="ios-glass sticky top-0 z-30 px-4 lg:px-8 py-3 rounded-none border-x-0 border-t-0 border-b border-white/10">
+        <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <div id="statusIcon" class="w-9 h-9 rounded-2xl bg-white/5 border border-white/20 flex items-center justify-center text-cyan-400 shrink-0">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="min-w-0">
+              <h1 id="pageTitleMain" class="text-sm font-black tracking-wide text-white truncate">Hunter Home</h1>
+              <span id="punishmentBadge" class="hidden text-[9px] font-mono bg-rose-600 text-white px-2 py-0.5 rounded-full animate-pulse">PUNISHMENT ACTIVE</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <div class="font-mono text-[11px] px-3 py-1.5 bg-black/40 rounded-full border border-white/10">
+              <span id="liveClock" class="font-bold text-emerald-400">00:00:00</span>
+            </div>
+            <button id="notifBtn" onclick="requestNotificationPermission(true)" class="crystal-btn px-3 py-1.5 rounded-full text-[10px] font-mono font-semibold text-slate-200 flex items-center gap-1.5 shrink-0">
+              <i class="fa-solid fa-bell text-emerald-400"></i> <span id="notifBtnText" class="hidden sm:inline">Enable Alerts</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="max-w-5xl mx-auto px-4 lg:px-8 mt-5 pb-6">
+
+        <!-- ======================= PAGE: HOME ======================= -->
+        <div id="page-home" class="app-page active space-y-5">
       <section id="section-hunter" class="ios-glass hunter-panel p-6 relative overflow-hidden border border-cyan-500/30">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
           <div class="flex items-center gap-4">
@@ -414,8 +416,51 @@
 
         <p class="text-[10px] font-mono text-slate-500 mt-3">Earn XP by hitting your water goal, checking off matrix protocols, completing routine slots, and finishing every exercise. Rank climbs E → D → C → B → A → S → SS → SSS as you level.</p>
       </section>
+      <section id="section-quote" class="ios-glass p-6 relative overflow-hidden">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
+          <div>
+            <span class="text-[10px] uppercase font-mono tracking-widest text-emerald-400 font-bold block mb-1">
+              <i class="fa-solid fa-fire mr-1"></i> Daily Mindset & Core Directive
+            </span>
+            <h2 id="motivationalQuote" class="text-xl md:text-2xl font-black text-slate-100 italic tracking-tight">
+              "Suffer the pain of discipline or suffer the pain of regret."
+            </h2>
+          </div>
+          <button onclick="nextQuote()" class="crystal-btn px-4 py-2 rounded-2xl text-xs font-mono text-slate-200 flex items-center gap-2 shrink-0">
+            <i class="fa-solid fa-rotate"></i> Next Line
+          </button>
+        </div>
+      </section>
+      <section id="section-focus" class="ios-glass p-6">
+        <div class="flex justify-between items-center mb-4 pb-3 border-b border-white/10">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-clock text-cyan-400"></i> Dynamic Time-Based Focus Window
+            </h3>
+            <p class="text-xs text-slate-400">Strictly tracks current time slot based on live clock.</p>
+          </div>
+          <span id="currentWindowBadge" class="text-xs font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 px-3.5 py-1 rounded-full font-bold">
+            Live Active Slot
+          </span>
+        </div>
 
-      <!-- DAILY QUESTS -->
+        <div class="bg-gradient-to-br from-cyan-950/30 to-slate-900/60 p-5 rounded-2xl border border-cyan-500/40 shadow-xl shadow-cyan-950/30">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
+            <span class="text-xs font-mono text-cyan-400 font-bold uppercase flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span> Current Time Slot Active
+            </span>
+            <span id="liveSlotTime" class="text-xs font-mono bg-black/40 text-slate-300 border border-white/10 px-3 py-1 rounded-full font-bold">--:-- - --:--</span>
+          </div>
+          <h4 id="liveTaskTitle" class="text-xl font-black text-white my-3">Loading current routine...</h4>
+          <button id="completeLiveBtn" onclick="completeCurrentLiveTask()" class="crystal-btn crystal-btn-cyan w-full py-3 text-slate-950 font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg">
+            <span>Mark Current Task Done ✓</span> <span class="text-[10px] opacity-80">(Vibrates Phone)</span>
+          </button>
+        </div>
+      </section>
+        </div><!-- /page-home -->
+
+        <!-- ======================= PAGE: QUESTS ======================= -->
+        <div id="page-quests" class="app-page space-y-5">
       <section id="section-quests" class="ios-glass p-6 border border-white/10">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 pb-3 border-b border-white/10 gap-2">
           <div>
@@ -431,8 +476,104 @@
         <p class="text-[10px] font-mono text-rose-400 mb-3">⚠ Failure to complete daily quests before reset may incur a penalty.</p>
         <div id="dailyQuestList" class="space-y-2.5"></div>
       </section>
+      <section id="section-matrix" class="ios-glass p-6 overflow-hidden">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-table-cells text-emerald-400"></i> 30-Day Habit Matrix Dashboard
+            </h3>
+            <p class="text-xs text-slate-400">Highlighting current date (<span id="matrixTodayBanner" class="text-emerald-400 font-bold">Day --</span>). Tap boxes to toggle completion.</p>
+          </div>
+          <div class="flex items-center gap-2 font-mono text-xs">
+            <span class="bg-black/40 text-emerald-400 px-3.5 py-1.5 rounded-full border border-white/10 shadow-inner">
+              Total Points: <strong id="totalMatrixPoints" class="text-white font-bold">0</strong>
+            </span>
+          </div>
+        </div>
 
-      <!-- GUILD -->
+        <div class="overflow-x-auto pb-2">
+          <table class="w-full text-left text-xs border-collapse font-mono">
+            <thead>
+              <tr id="matrixHeaderRow" class="border-b border-white/10 text-slate-400"></tr>
+            </thead>
+            <tbody id="matrixTableBody" class="divide-y divide-white/5"></tbody>
+          </table>
+        </div>
+      </section>
+      <section id="section-workout" class="ios-glass p-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 pb-3 border-b border-white/10 gap-3">
+          <div>
+            <span id="workoutDayLabel" class="text-[10px] font-mono font-bold uppercase tracking-widest text-cyan-400 block">Push Day</span>
+            <h3 class="text-base font-extrabold text-white">Dr. Destruction Routine</h3>
+          </div>
+          <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+            <div class="text-right">
+              <span class="text-[10px] font-mono text-slate-400 block">Progress</span>
+              <span id="workoutProgressPercent" class="text-xs font-mono font-bold text-emerald-400">0%</span>
+            </div>
+            <button onclick="resetAllWorkouts()" class="crystal-btn px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-white rounded-xl">
+              Reset Session
+            </button>
+          </div>
+        </div>
+
+        <div id="exerciseList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+      </section>
+        </div><!-- /page-quests -->
+
+        <!-- ======================= PAGE: RANK & GUILD ======================= -->
+        <div id="page-rank" class="app-page space-y-5">
+
+          <section class="ios-glass p-6 border border-cyan-500/30">
+            <div class="text-center mb-1">
+              <span class="page-eyebrow text-cyan-400">System Designation</span>
+              <h3 class="text-lg font-black text-white mt-1">Hunter Rank Progression</h3>
+              <p class="text-[11px] font-mono text-slate-500 mt-1">E → D → C → B → A → S → SS → SSS</p>
+            </div>
+            <div class="hex-rank-wheel" id="hexRankWheel"></div>
+            <div class="rank-foot-card" id="rankWheelFooter"></div>
+          </section>
+      <section id="section-ranking" class="ios-glass p-6 border border-amber-500/20">
+        <button onclick="document.getElementById('hallOfFameCard').scrollIntoView({behavior:'smooth', block:'center'})" class="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-amber-500/30 mb-4">
+          <i class="fa-solid fa-trophy mr-1.5"></i> GLOBAL RANKING
+        </button>
+
+        <div id="hallOfFameCard" class="bg-black/40 p-4 rounded-2xl border border-white/10 flex items-center justify-between gap-3 mb-4">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500/30 to-indigo-600/30 border-2 border-cyan-400/50 flex items-center justify-center text-lg font-black text-cyan-300 shrink-0">
+              <i class="fa-solid fa-user-ninja"></i>
+            </div>
+            <div class="min-w-0">
+              <h4 id="rankCardName" class="text-sm font-black text-white truncate">Guest Hunter</h4>
+              <span class="text-[10px] font-mono text-slate-500">Joined</span>
+              <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                <span id="rankCardRank" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-rose-600/80 text-white">RANK E</span>
+                <span id="rankCardExp" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-white/10 text-slate-200">EXP 0</span>
+                <span id="rankCardStreak" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-white/10 text-slate-200">STREAK 0</span>
+              </div>
+            </div>
+          </div>
+          <span id="rankCardPosition" class="text-sm font-mono font-black text-amber-400 bg-black/40 border border-amber-500/30 rounded-xl px-3 py-2 shrink-0">#--</span>
+        </div>
+
+        <h4 class="text-xs font-mono font-bold uppercase tracking-widest text-amber-400 mb-2 text-center">Hall of Fame</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs font-mono border-collapse">
+            <thead>
+              <tr class="text-slate-500 border-b border-white/10">
+                <th class="py-2 pr-2">No #</th>
+                <th class="py-2 pr-2">Name</th>
+                <th class="py-2 pr-2">Rank</th>
+                <th class="py-2 pr-2">Exp</th>
+              </tr>
+            </thead>
+            <tbody id="hallOfFameBody" class="divide-y divide-white/5">
+              <tr><td colspan="4" class="py-4 text-center text-slate-500">Loading hunters…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-center text-[10px] font-mono text-slate-500 mt-3">Train daily, lock in, and raise through the ranks.</p>
+      </section>
       <section id="section-guild" class="ios-glass p-6 border border-indigo-500/20">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 pb-3 border-b border-white/10 gap-2">
           <div>
@@ -483,68 +624,17 @@
           </div>
         </div>
       </section>
+        </div><!-- /page-rank -->
 
-      <!-- GLOBAL RANKING / HALL OF FAME -->
-      <section id="section-ranking" class="ios-glass p-6 border border-amber-500/20">
-        <button onclick="document.getElementById('hallOfFameCard').scrollIntoView({behavior:'smooth', block:'center'})" class="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-black text-sm tracking-wide shadow-lg shadow-amber-500/30 mb-4">
-          <i class="fa-solid fa-trophy mr-1.5"></i> GLOBAL RANKING
-        </button>
+        <!-- ======================= PAGE: ANALYTICS / STATS ======================= -->
+        <div id="page-stats" class="app-page space-y-5">
 
-        <div id="hallOfFameCard" class="bg-black/40 p-4 rounded-2xl border border-white/10 flex items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3 min-w-0">
-            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500/30 to-indigo-600/30 border-2 border-cyan-400/50 flex items-center justify-center text-lg font-black text-cyan-300 shrink-0">
-              <i class="fa-solid fa-user-ninja"></i>
-            </div>
-            <div class="min-w-0">
-              <h4 id="rankCardName" class="text-sm font-black text-white truncate">Guest Hunter</h4>
-              <span class="text-[10px] font-mono text-slate-500">Joined</span>
-              <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
-                <span id="rankCardRank" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-rose-600/80 text-white">RANK E</span>
-                <span id="rankCardExp" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-white/10 text-slate-200">EXP 0</span>
-                <span id="rankCardStreak" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-white/10 text-slate-200">STREAK 0</span>
-              </div>
-            </div>
-          </div>
-          <span id="rankCardPosition" class="text-sm font-mono font-black text-amber-400 bg-black/40 border border-amber-500/30 rounded-xl px-3 py-2 shrink-0">#--</span>
-        </div>
-
-        <h4 class="text-xs font-mono font-bold uppercase tracking-widest text-amber-400 mb-2 text-center">Hall of Fame</h4>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs font-mono border-collapse">
-            <thead>
-              <tr class="text-slate-500 border-b border-white/10">
-                <th class="py-2 pr-2">No #</th>
-                <th class="py-2 pr-2">Name</th>
-                <th class="py-2 pr-2">Rank</th>
-                <th class="py-2 pr-2">Exp</th>
-              </tr>
-            </thead>
-            <tbody id="hallOfFameBody" class="divide-y divide-white/5">
-              <tr><td colspan="4" class="py-4 text-center text-slate-500">Loading hunters…</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="text-center text-[10px] font-mono text-slate-500 mt-3">Train daily, lock in, and raise through the ranks.</p>
-      </section>
-
-      <!-- SECTION 1: MOTIVATIONAL QUOTE -->
-      <section id="section-quote" class="ios-glass p-6 relative overflow-hidden">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative z-10">
-          <div>
-            <span class="text-[10px] uppercase font-mono tracking-widest text-emerald-400 font-bold block mb-1">
-              <i class="fa-solid fa-fire mr-1"></i> Daily Mindset & Core Directive
-            </span>
-            <h2 id="motivationalQuote" class="text-xl md:text-2xl font-black text-slate-100 italic tracking-tight">
-              "Suffer the pain of discipline or suffer the pain of regret."
-            </h2>
-          </div>
-          <button onclick="nextQuote()" class="crystal-btn px-4 py-2 rounded-2xl text-xs font-mono text-slate-200 flex items-center gap-2 shrink-0">
-            <i class="fa-solid fa-rotate"></i> Next Line
-          </button>
-        </div>
-      </section>
-
-      <!-- WATER CONSUMPTION SECTION -->
+          <section class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div class="stat-card"><div class="stat-label">Level</div><div class="stat-value" id="statLevel">1</div></div>
+            <div class="stat-card"><div class="stat-label">Rank</div><div class="stat-value text-cyan-400" id="statRank">E</div></div>
+            <div class="stat-card"><div class="stat-label">Streak</div><div class="stat-value text-amber-400" id="statStreak">0</div></div>
+            <div class="stat-card"><div class="stat-label">Matrix Pts</div><div class="stat-value text-emerald-400" id="statMatrixPoints">0</div></div>
+          </section>
       <section id="section-water" class="ios-glass p-6">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 pb-3 border-b border-white/10 gap-3">
           <div>
@@ -621,131 +711,6 @@
           </div>
         </div>
       </section>
-
-      <!-- SCHEDULED REMINDERS SECTION -->
-      <section id="section-alarms" class="ios-glass p-6">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 pb-3 border-b border-white/10 gap-2">
-          <div>
-            <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400 block">
-              <i class="fa-solid fa-bell mr-1"></i> Native Alarm & Custom Task System
-            </span>
-            <h3 class="text-base font-extrabold text-white">Date & Time Scheduled Reminders</h3>
-          </div>
-          <span class="text-xs font-mono text-slate-400">Triggers vibration & native OS push</span>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <form onsubmit="addCustomReminder(event)" class="bg-black/40 p-4 rounded-2xl border border-white/10 space-y-3 font-mono text-xs">
-            <h4 class="font-bold text-slate-200 text-xs flex items-center gap-2">
-              <i class="fa-solid fa-plus text-amber-400"></i> Set New Reminder
-            </h4>
-            <div>
-              <label class="block text-[11px] text-slate-400 mb-1">Main Point / Title</label>
-              <input type="text" id="remTitleInput" placeholder="e.g. Call Client / Take Creatine" required class="w-full bg-black/50 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[11px] text-slate-400 mb-1">Target Date</label>
-                <input type="date" id="remDateInput" required class="w-full bg-black/50 border border-white/15 rounded-xl px-2 py-2 text-white focus:outline-none focus:border-amber-400 text-[11px]">
-              </div>
-              <div>
-                <label class="block text-[11px] text-slate-400 mb-1">Target Time</label>
-                <input type="time" id="remTimeInput" required class="w-full bg-black/50 border border-white/15 rounded-xl px-2 py-2 text-white focus:outline-none focus:border-amber-400 text-[11px]">
-              </div>
-            </div>
-            <button type="submit" class="crystal-btn w-full py-2.5 text-xs text-amber-300 font-bold rounded-xl mt-2 flex items-center justify-center gap-2">
-              <i class="fa-solid fa-clock"></i> Save Scheduled Reminder
-            </button>
-          </form>
-
-          <div class="lg:col-span-2 bg-black/40 p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
-            <div>
-              <h4 class="font-mono font-bold text-slate-200 text-xs mb-3 flex items-center justify-between">
-                <span><i class="fa-solid fa-list-check text-amber-400 mr-1.5"></i> Active Phone Reminders</span>
-                <span id="reminderCountBadge" class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full">0 Active</span>
-              </h4>
-              <div id="remindersList" class="space-y-2 max-h-[220px] overflow-y-auto pr-1"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- STRICT TIME-BASED LIVE ROUTINE FOCUS WINDOW -->
-      <section id="section-focus" class="ios-glass p-6">
-        <div class="flex justify-between items-center mb-4 pb-3 border-b border-white/10">
-          <div>
-            <h3 class="text-base font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-clock text-cyan-400"></i> Dynamic Time-Based Focus Window
-            </h3>
-            <p class="text-xs text-slate-400">Strictly tracks current time slot based on live clock.</p>
-          </div>
-          <span id="currentWindowBadge" class="text-xs font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 px-3.5 py-1 rounded-full font-bold">
-            Live Active Slot
-          </span>
-        </div>
-
-        <div class="bg-gradient-to-br from-cyan-950/30 to-slate-900/60 p-5 rounded-2xl border border-cyan-500/40 shadow-xl shadow-cyan-950/30">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
-            <span class="text-xs font-mono text-cyan-400 font-bold uppercase flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span> Current Time Slot Active
-            </span>
-            <span id="liveSlotTime" class="text-xs font-mono bg-black/40 text-slate-300 border border-white/10 px-3 py-1 rounded-full font-bold">--:-- - --:--</span>
-          </div>
-          <h4 id="liveTaskTitle" class="text-xl font-black text-white my-3">Loading current routine...</h4>
-          <button id="completeLiveBtn" onclick="completeCurrentLiveTask()" class="crystal-btn crystal-btn-cyan w-full py-3 text-slate-950 font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg">
-            <span>Mark Current Task Done ✓</span> <span class="text-[10px] opacity-80">(Vibrates Phone)</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- 30-DAY HABIT MATRIX -->
-      <section id="section-matrix" class="ios-glass p-6 overflow-hidden">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-          <div>
-            <h3 class="text-base font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-table-cells text-emerald-400"></i> 30-Day Habit Matrix Dashboard
-            </h3>
-            <p class="text-xs text-slate-400">Highlighting current date (<span id="matrixTodayBanner" class="text-emerald-400 font-bold">Day --</span>). Tap boxes to toggle completion.</p>
-          </div>
-          <div class="flex items-center gap-2 font-mono text-xs">
-            <span class="bg-black/40 text-emerald-400 px-3.5 py-1.5 rounded-full border border-white/10 shadow-inner">
-              Total Points: <strong id="totalMatrixPoints" class="text-white font-bold">0</strong>
-            </span>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto pb-2">
-          <table class="w-full text-left text-xs border-collapse font-mono">
-            <thead>
-              <tr id="matrixHeaderRow" class="border-b border-white/10 text-slate-400"></tr>
-            </thead>
-            <tbody id="matrixTableBody" class="divide-y divide-white/5"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- WORKOUT TRACKER -->
-      <section id="section-workout" class="ios-glass p-6">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 pb-3 border-b border-white/10 gap-3">
-          <div>
-            <span id="workoutDayLabel" class="text-[10px] font-mono font-bold uppercase tracking-widest text-cyan-400 block">Push Day</span>
-            <h3 class="text-base font-extrabold text-white">Dr. Destruction Routine</h3>
-          </div>
-          <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-            <div class="text-right">
-              <span class="text-[10px] font-mono text-slate-400 block">Progress</span>
-              <span id="workoutProgressPercent" class="text-xs font-mono font-bold text-emerald-400">0%</span>
-            </div>
-            <button onclick="resetAllWorkouts()" class="crystal-btn px-3 py-1.5 text-xs font-mono text-slate-400 hover:text-white rounded-xl">
-              Reset Session
-            </button>
-          </div>
-        </div>
-
-        <div id="exerciseList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-      </section>
-
-      <!-- ANALYTICS -->
       <section id="section-history" class="ios-glass p-6 border-2 border-emerald-500/30 space-y-6">
         <div class="flex flex-col md:flex-row justify-between md:items-center pb-3 border-b border-white/10 gap-2">
           <div>
@@ -796,8 +761,6 @@
           </div>
         </div>
       </section>
-
-      <!-- SLEEP MATRIX -->
       <section id="section-sleep" class="ios-glass p-6">
         <div class="flex justify-between items-center mb-4 pb-3 border-b border-white/10">
           <div>
@@ -813,8 +776,89 @@
           <div id="sleepGridContainer" class="min-w-[600px] space-y-2 font-mono text-xs"></div>
         </div>
       </section>
+        </div><!-- /page-stats -->
 
-      <!-- JOURNAL NOTES -->
+        <!-- ======================= PAGE: PROFILE ======================= -->
+        <div id="page-profile" class="app-page space-y-5">
+
+          <section class="ios-glass p-6 border border-white/10">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="page-eyebrow text-cyan-400">Hunter Profile</span>
+                <h3 id="sideHunterName" class="text-lg font-black text-white mt-1">Guest Hunter</h3>
+              </div>
+              <button onclick="handleLogout()" class="crystal-btn crystal-btn-danger px-4 py-2 rounded-xl text-[11px] font-bold text-rose-200">
+                <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+              </button>
+            </div>
+            <div class="bg-black/40 rounded-2xl border border-white/10 px-4">
+              <div class="profile-row"><span>Level / Rank</span><span><strong id="profileHunterLevel" class="text-white">1</strong> · <strong id="profileHunterRank" class="text-cyan-400">E-Rank Hunter</strong></span></div>
+              <div class="profile-row"><span>Cloud Status</span><strong id="dbSyncStatus" class="text-amber-400">Connecting...</strong></div>
+              <div class="profile-row"><span>Today's Date</span><strong id="sideTodayDate" class="text-emerald-400">Day --</strong></div>
+              <div class="profile-row"><span>Water Hydration</span><strong id="sideWaterProgress" class="text-cyan-400">0.0 / 4.0L</strong></div>
+              <div class="profile-row"><span>Matrix Points</span><strong id="sideMatrixPoints" class="text-emerald-400">0</strong></div>
+              <div class="profile-row"><span>Hunter Rank</span><strong id="sideRank" class="text-cyan-400">E</strong></div>
+            </div>
+            <p id="nativeBridgeDiag" class="text-[10px] font-mono text-amber-400 mt-3">Checking native bridge…</p>
+          </section>
+
+          <section class="ios-glass p-6 border border-white/10">
+            <span class="page-eyebrow text-slate-400 block mb-3">System Controls</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button onclick="testLevelUpAnimation()" class="crystal-btn crystal-btn-cyan px-4 py-3 rounded-2xl text-xs font-mono font-bold text-slate-950">
+                <i class="fa-solid fa-arrow-up-right-dots mr-1.5"></i> Preview Level Up
+              </button>
+              <button onclick="triggerPunishmentTest()" class="crystal-btn crystal-btn-danger px-4 py-3 rounded-2xl text-xs font-mono font-bold text-rose-200">
+                <i class="fa-solid fa-skull mr-1.5"></i> Test Penalty
+              </button>
+            </div>
+          </section>
+      <section id="section-alarms" class="ios-glass p-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 pb-3 border-b border-white/10 gap-2">
+          <div>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400 block">
+              <i class="fa-solid fa-bell mr-1"></i> Native Alarm & Custom Task System
+            </span>
+            <h3 class="text-base font-extrabold text-white">Date & Time Scheduled Reminders</h3>
+          </div>
+          <span class="text-xs font-mono text-slate-400">Triggers vibration & native OS push</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <form onsubmit="addCustomReminder(event)" class="bg-black/40 p-4 rounded-2xl border border-white/10 space-y-3 font-mono text-xs">
+            <h4 class="font-bold text-slate-200 text-xs flex items-center gap-2">
+              <i class="fa-solid fa-plus text-amber-400"></i> Set New Reminder
+            </h4>
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-1">Main Point / Title</label>
+              <input type="text" id="remTitleInput" placeholder="e.g. Call Client / Take Creatine" required class="w-full bg-black/50 border border-white/15 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Target Date</label>
+                <input type="date" id="remDateInput" required class="w-full bg-black/50 border border-white/15 rounded-xl px-2 py-2 text-white focus:outline-none focus:border-amber-400 text-[11px]">
+              </div>
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Target Time</label>
+                <input type="time" id="remTimeInput" required class="w-full bg-black/50 border border-white/15 rounded-xl px-2 py-2 text-white focus:outline-none focus:border-amber-400 text-[11px]">
+              </div>
+            </div>
+            <button type="submit" class="crystal-btn w-full py-2.5 text-xs text-amber-300 font-bold rounded-xl mt-2 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-clock"></i> Save Scheduled Reminder
+            </button>
+          </form>
+
+          <div class="lg:col-span-2 bg-black/40 p-4 rounded-2xl border border-white/10 flex flex-col justify-between">
+            <div>
+              <h4 class="font-mono font-bold text-slate-200 text-xs mb-3 flex items-center justify-between">
+                <span><i class="fa-solid fa-list-check text-amber-400 mr-1.5"></i> Active Phone Reminders</span>
+                <span id="reminderCountBadge" class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full">0 Active</span>
+              </h4>
+              <div id="remindersList" class="space-y-2 max-h-[220px] overflow-y-auto pr-1"></div>
+            </div>
+          </div>
+        </div>
+      </section>
       <section id="section-notes" class="ios-glass p-6">
         <div class="flex justify-between items-center mb-3">
           <h3 class="text-base font-bold text-white flex items-center gap-2">
@@ -824,11 +868,11 @@
         </div>
         <textarea id="journalNotes" oninput="saveNotes()" placeholder="Log today's workout weight loads, key learnings, or failures..." class="w-full h-28 bg-black/40 border border-white/10 rounded-2xl p-4 text-xs text-slate-200 focus:outline-none focus:border-emerald-500/60 font-mono transition-all"></textarea>
       </section>
+        </div><!-- /page-profile -->
 
-    </div>
-  </main>
+      </div>
+    </main>
   </div><!-- /mainAppRoot -->
-
   <script>
     // ---- Native bridge (no build step needed) ----
     // When this page runs inside the Capacitor Android shell, window.Capacitor
@@ -1352,6 +1396,7 @@
       startClockAndScheduler();
       initWaterTimer();
       startQuestResetCountdown();
+      showPage('home');
 
       // App content stays invisible/inert until auth resolves (see authOverlay + #mainAppRoot).
       auth.onAuthStateChanged(onAuthStateChangedHandler);
@@ -1575,6 +1620,45 @@
       document.getElementById("hunterXpBar").style.width = `${pct}%`;
       document.getElementById("rankBadge").innerText = rankInfo.rank;
       document.getElementById("sideRank").innerText = rankInfo.rank;
+
+      // ---- Fresh-UI mirrors (safe no-ops if an element isn't on the page) ----
+      const setText = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+      setText("statLevel", level);
+      setText("statStreak", appState.streak || 0);
+      setText("statXp", `${xp}/${needed}`);
+      setText("statRank", rankInfo.rank);
+      setText("profileHunterLevel", level);
+      setText("profileHunterRank", rankInfo.label);
+      renderRankWheel(rankInfo);
+    }
+
+    // Builds the hexagon rank-wheel (Rank page) from RANK_TABLE, highlighting
+    // the hunter's current rank — visual language borrowed from the reference
+    // "Arise"-style rank UI.
+    function renderRankWheel(rankInfo) {
+      const wrap = document.getElementById("hexRankWheel");
+      if (!wrap) return;
+      wrap.innerHTML = RANK_TABLE.map((r, i) => {
+        const next = RANK_TABLE[i + 1];
+        const maxLvl = next ? next.level - 1 : "∞";
+        const active = r.rank === rankInfo.rank;
+        return `
+          <div class="hex-node ${active ? 'active' : ''}" title="${r.label}">
+            <div class="hex-shape">${r.rank}</div>
+            <div class="hex-label">LVL ${r.level}${maxLvl !== "∞" ? "&ndash;" + maxLvl : "+"}</div>
+          </div>`;
+      }).join("");
+
+      const foot = document.getElementById("rankWheelFooter");
+      if (foot) {
+        const idx = RANK_TABLE.findIndex(r => r.rank === rankInfo.rank);
+        const next = RANK_TABLE[idx + 1];
+        foot.innerHTML = `
+          <div class="rank-foot-item"><span>SYSTEM DESIGNATION</span><strong>${rankInfo.rank}-RANK</strong></div>
+          <div class="rank-foot-item"><span>MIN LEVEL</span><strong>${rankInfo.level}</strong></div>
+          <div class="rank-foot-item"><span>NEXT RANK</span><strong>${next ? next.rank + ' @ LVL ' + next.level : 'MAX'}</strong></div>
+          <div class="rank-foot-item"><span>STATUS</span><strong class="text-cyan-400">VERIFIED</strong></div>`;
+      }
     }
 
     function renderDailyQuests() {
@@ -1907,23 +1991,38 @@
       updateLineCharts();
     }
 
+    // ---- Multi-page app shell navigation ----
+    const PAGE_TITLES = {
+      home: "Hunter Home",
+      quests: "Daily Quests",
+      rank: "Rank & Guild",
+      stats: "Analytics",
+      profile: "Profile"
+    };
+    let currentPage = "home";
+    function showPage(page) {
+      currentPage = page;
+      document.querySelectorAll(".app-page").forEach(p => p.classList.remove("active"));
+      const target = document.getElementById("page-" + page);
+      if (target) target.classList.add("active");
+
+      document.querySelectorAll(".bn-btn").forEach(b => b.classList.toggle("active", b.dataset.page === page));
+      document.querySelectorAll(".side-nav-link").forEach(b => b.classList.toggle("active", b.dataset.page === page));
+
+      const titleEl = document.getElementById("pageTitleMain");
+      if (titleEl) titleEl.innerText = PAGE_TITLES[page] || "Winter Arc";
+
+      const main = document.getElementById("appMain");
+      if (main) main.scrollTop = 0;
+
+      if (window.innerWidth < 1024) closeSidebar();
+    }
+
     function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("-translate-x-full");
+      document.getElementById("sidebar")?.classList.toggle("-translate-x-full");
     }
-
-    function setActiveNav(el) {
-      document.querySelectorAll(".nav-link").forEach(l => {
-        l.className = "nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all";
-      });
-      el.className = "nav-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-white/10 text-white font-bold border border-white/10 transition-all";
-      if (window.innerWidth < 1024) toggleSidebar();
-    }
-
-    // Used by the mobile bottom tab bar — plain scroll, no sidebar toggle
-    // (unlike setActiveNav, which is wired to the desktop/sidebar links).
-    function scrollToSection(id) {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    function closeSidebar() {
+      document.getElementById("sidebar")?.classList.add("-translate-x-full");
     }
 
     function startClockAndScheduler() {
@@ -2232,6 +2331,7 @@
       });
 
       document.getElementById("totalMatrixPoints").innerText = totalPts;
+      { const el = document.getElementById("statMatrixPoints"); if (el) el.innerText = totalPts; }
       document.getElementById("sideMatrixPoints").innerText = totalPts;
     }
 
