@@ -172,8 +172,7 @@
 
     /* ================= FRESH MULTI-PAGE APP SHELL ================= */
     .app-page { display: none; }
-    .app-page.active { display: block; animation: pageIn .35s ease; }
-    @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .app-page.active { display: block; }
 
     #appHeader { padding-top: calc(0.75rem + var(--safe-top)); }
     #appMain { padding-bottom: calc(5.5rem + var(--safe-bottom)); }
@@ -373,6 +372,113 @@
     .diet-list-block ul { list-style: none; padding: 0; margin: 0; }
     .diet-list-block li { font-size: 11px; color: #cbd5e1; padding: 4px 0; padding-left: 14px; position: relative; line-height: 1.4; }
     .diet-list-block li::before { content: "→"; position: absolute; left: 0; color: #22d3ee; }
+
+    /* ================= Strength Constellation (spider chart) ================= */
+    .constellation-badge {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 800; padding: 6px 14px;
+      border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); white-space: nowrap;
+    }
+    .spider-wrap { display: flex; justify-content: center; padding: 6px 0 4px; }
+    .spider-svg { width: 100%; max-width: 300px; height: auto; }
+    .spider-label { fill: #94a3b8; font-size: 9px; font-family: 'JetBrains Mono', monospace; font-weight: 700; text-transform: uppercase; }
+    .spider-fill { animation: spiderGrow .6s cubic-bezier(.2,.9,.25,1); transform-origin: center; }
+    @keyframes spiderGrow { from { transform: scale(0.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .muscle-row-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+    .muscle-row-name { font-size: 11.5px; font-weight: 800; color: #e2e8f0; }
+    .muscle-row-tier { font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 800; }
+    .muscle-row-bar { height: 6px; border-radius: 4px; background: rgba(255,255,255,0.07); overflow: hidden; }
+    .muscle-row-fill { height: 100%; border-radius: 4px; transition: width .5s cubic-bezier(.2,.9,.25,1); }
+
+    /* ================= Avatar ================= */
+    .avatar-slot {
+      display: flex; align-items: center; justify-content: center; color: #22d3ee; overflow: hidden;
+    }
+    .avatar-slot i { font-size: 1em; }
+    .avatar-img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-big {
+      width: 96px; height: 96px; border-radius: 32px; margin: 14px auto 4px; font-size: 34px;
+      background: linear-gradient(160deg, rgba(34,211,238,0.18), rgba(0,0,0,0.3)); border: 2px solid rgba(34,211,238,0.4);
+      box-shadow: 0 0 26px rgba(34,211,238,0.2);
+    }
+    .avatar-icon-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 320px; margin: 0 auto; }
+    .avatar-icon-opt {
+      aspect-ratio: 1; border-radius: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+      color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all .15s ease;
+    }
+    .avatar-icon-opt.active { background: rgba(34,211,238,0.18); border-color: rgba(34,211,238,.6); color: #22d3ee; transform: scale(1.06); }
+
+    /* ================= Onboarding Wizard ================= */
+    .ob-overlay {
+      position: fixed; inset: 0; z-index: 10002; display: none; flex-direction: column;
+      background: radial-gradient(circle at 50% 20%, #0d1420, #05070c 70%); padding: calc(20px + var(--safe-top)) 20px calc(20px + var(--safe-bottom));
+    }
+    .ob-overlay.show { display: flex; animation: overlayFade .3s ease; }
+    .ob-progress-track { height: 4px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 10px; }
+    .ob-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg,#22d3ee,#6366f1); transition: width .4s ease; }
+    .ob-skip { align-self: flex-end; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #64748b; text-decoration: underline; margin-bottom: 10px; }
+    .ob-body { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 440px; margin: 0 auto; width: 100%; }
+    .ob-step { animation: obStepIn .4s cubic-bezier(.2,.9,.25,1); }
+    @keyframes obStepIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+    .ob-step-center { text-align: center; }
+    .ob-icon { width: 74px; height: 74px; border-radius: 26px; margin: 0 auto 18px; background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,.4); color: #22d3ee; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+    .ob-eyebrow { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #22d3ee; font-weight: 700; text-align: center; margin-bottom: 8px; }
+    .ob-title { font-size: 21px; font-weight: 900; color: #fff; text-align: center; margin-bottom: 10px; }
+    .ob-sub { font-size: 12.5px; color: #94a3b8; text-align: center; line-height: 1.5; margin-bottom: 22px; }
+    .ob-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .ob-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .ob-opt {
+      padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+      color: #e2e8f0; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .15s ease;
+    }
+    .ob-opt:active { transform: scale(.96); }
+    .ob-opt-check.active { background: rgba(34,211,238,0.18); border-color: rgba(34,211,238,.6); color: #67e8f9; }
+    .ob-opt-check i { color: #22d3ee; }
+    .ob-continue {
+      width: 100%; padding: 15px; border-radius: 18px; background: linear-gradient(135deg,#22d3ee,#0891b2); color: #04141a;
+      font-weight: 900; font-size: 13px; letter-spacing: .02em; transition: opacity .2s ease;
+    }
+    .ob-continue:disabled { opacity: .35; }
+    .ob-input-row { margin-bottom: 16px; }
+    .ob-input-row label { display: block; font-size: 11px; font-family: 'JetBrains Mono', monospace; color: #94a3b8; margin-bottom: 6px; }
+    .ob-input {
+      width: 100%; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-size: 16px; font-weight: 700;
+    }
+    .ob-day-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
+    .ob-day-chip { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #94a3b8; font-size: 11px; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+    .ob-day-chip.active { background: rgba(34,211,238,0.2); border-color: rgba(34,211,238,.6); color: #67e8f9; }
+    .ob-analyzing-pct { font-size: 44px; font-weight: 900; color: #22d3ee; text-align: center; margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
+    .ob-analyzing-list { margin-top: 22px; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+    .ob-check-row { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: #64748b; transition: color .3s ease; }
+    .ob-check-row i { font-size: 14px; }
+    .ob-check-row.done { color: #e2e8f0; }
+    .ob-check-row.done i { color: #34d399; }
+    .ob-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 24px; }
+    .ob-stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 18px 10px; text-align: center; animation: obStatPop .5s cubic-bezier(.34,1.56,.64,1) backwards; }
+    .ob-stat-card:nth-child(2) { animation-delay: .08s; }
+    .ob-stat-card:nth-child(3) { animation-delay: .16s; }
+    .ob-stat-card:nth-child(4) { animation-delay: .24s; }
+    @keyframes obStatPop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+    .ob-stat-card i { font-size: 20px; }
+    .ob-stat-val { font-size: 26px; font-weight: 900; margin: 8px 0 2px; }
+    .ob-stat-label { font-size: 10px; color: #64748b; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .05em; }
+
+    /* ================= Animation variety pass ================= */
+    /* Distinct feedback per interaction type instead of one repeated fade. */
+    @keyframes popBounce { 0% { transform: scale(1); } 35% { transform: scale(1.18); } 60% { transform: scale(0.94); } 100% { transform: scale(1); } }
+    .quest-check.just-checked, .demo-hex.just-logged { animation: popBounce .38s cubic-bezier(.34,1.56,.64,1); }
+
+    @keyframes flipInCard { from { transform: rotateY(90deg); opacity: 0; } to { transform: rotateY(0deg); opacity: 1; } }
+    .ach-card.just-unlocked { animation: flipInCard .5s cubic-bezier(.2,.9,.25,1); }
+
+    @keyframes slideFromRight { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideFromLeft { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: translateX(0); } }
+    .app-page.dir-fwd.active { animation: slideFromRight .32s cubic-bezier(.2,.9,.25,1); }
+    .app-page.dir-back.active { animation: slideFromLeft .32s cubic-bezier(.2,.9,.25,1); }
+
+    @keyframes bnPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+    .bn-btn.active i { animation: bnPulse .35s ease; }
   </style>
 </head>
 <body id="mainBody" class="bg-[#090c13] text-slate-100 font-sans min-h-screen transition-colors duration-500">
@@ -483,6 +589,13 @@
     </div>
   </div>
 
+  <!-- ONBOARDING WIZARD -->
+  <div id="onboardingOverlay" class="ob-overlay">
+    <div class="ob-progress-track"><div id="obProgressBar" class="ob-progress-fill"></div></div>
+    <button onclick="skipOnboarding()" class="ob-skip">Skip for now</button>
+    <div id="onboardBody" class="ob-body"></div>
+  </div>
+
   <!-- SIDE NAVBAR -->
   <div id="mainAppRoot" class="hidden">
 
@@ -536,8 +649,8 @@
       <header id="appHeader" class="ios-glass sticky top-0 z-30 px-4 lg:px-8 py-3 rounded-none border-x-0 border-t-0 border-b border-white/10">
         <div class="max-w-5xl mx-auto flex items-center justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0">
-            <div id="statusIcon" class="w-9 h-9 rounded-2xl bg-white/5 border border-white/20 flex items-center justify-center text-cyan-400 shrink-0">
-              <i class="fa-solid fa-shield-halved"></i>
+            <div id="statusIcon" onclick="showPage('profile')" class="avatar-slot w-9 h-9 rounded-2xl bg-white/5 border border-white/20 flex items-center justify-center text-cyan-400 shrink-0 overflow-hidden cursor-pointer">
+              <i class="fa-solid fa-user-ninja"></i>
             </div>
             <div class="min-w-0">
               <h1 id="pageTitleMain" class="text-sm font-black tracking-wide text-white truncate">Hunter Home</h1>
@@ -838,6 +951,19 @@
             <div class="stat-card"><div class="stat-label">Streak</div><div class="stat-value text-amber-400" id="statStreak">0</div></div>
             <div class="stat-card"><div class="stat-label">Matrix Pts</div><div class="stat-value text-emerald-400" id="statMatrixPoints">0</div></div>
           </section>
+
+          <section class="ios-glass p-6 border border-cyan-500/20">
+            <div class="flex items-center justify-between mb-1">
+              <div>
+                <span class="page-eyebrow text-cyan-400"><i class="fa-solid fa-star-of-life mr-1"></i> Strength Constellation</span>
+                <h3 class="text-base font-extrabold text-white mt-1">See how every muscle contributes</h3>
+              </div>
+              <span id="bodygraphOverallBadge" class="constellation-badge">Bronze III</span>
+            </div>
+            <div id="bodygraphSpider" class="spider-wrap"></div>
+            <div id="bodygraphList" class="space-y-3 mt-2"></div>
+          </section>
+
       <section id="section-water" class="ios-glass p-6">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 pb-3 border-b border-white/10 gap-3">
           <div>
@@ -983,6 +1109,19 @@
 
         <!-- ======================= PAGE: PROFILE ======================= -->
         <div id="page-profile" class="app-page space-y-5">
+
+          <section class="ios-glass p-6 border border-cyan-500/20 text-center">
+            <span class="page-eyebrow text-cyan-400">Hunter Avatar</span>
+            <div class="avatar-slot avatar-big" id="avatarBigPreview">
+              <i class="fa-solid fa-user-ninja"></i>
+            </div>
+            <button onclick="triggerAvatarUpload()" class="crystal-btn crystal-btn-cyan px-4 py-2 rounded-xl text-[11px] font-bold text-slate-950 mt-3">
+              <i class="fa-solid fa-camera mr-1.5"></i> Upload Photo
+            </button>
+            <input type="file" id="avatarFileInput" accept="image/*" class="hidden" onchange="handleAvatarUpload(this)">
+            <div class="page-eyebrow text-slate-500 mt-4 mb-2">Or pick an icon</div>
+            <div id="avatarIconGrid" class="avatar-icon-grid"></div>
+          </section>
 
           <section class="ios-glass p-6 border border-white/10">
             <div class="flex items-center justify-between mb-4">
@@ -1342,6 +1481,39 @@
       notes.forEach((f, i) => playTone(f, t + i * 0.09, 0.28, 'triangle', 0.2));
       playTone(1046.5, t + 0.55, 0.5, 'sine', 0.16);
     }
+    // ---- Per-type notification sounds (distinct "signature" for each event) ----
+    function playWaterChime() {
+      // Soft, gentle two-note "droplet" — low urgency
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      playTone(660, t, 0.11, 'sine', 0.12);
+      playTone(880, t + 0.09, 0.16, 'sine', 0.1);
+    }
+    function playAchievementChime() {
+      // Bright ascending sparkle — distinct from the level-up fanfare
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      playTone(880, t, 0.1, 'sine', 0.18);
+      playTone(1108, t + 0.09, 0.1, 'sine', 0.18);
+      playTone(1318, t + 0.18, 0.26, 'square', 0.14);
+    }
+    function playPunishmentAlarm() {
+      // Dark, descending sawtooth — ominous "game over" tone
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      playTone(220, t, 0.22, 'sawtooth', 0.22);
+      playTone(164, t + 0.2, 0.3, 'sawtooth', 0.24);
+      playTone(110, t + 0.46, 0.55, 'sawtooth', 0.26);
+    }
+    function playGeneralPing() {
+      // Neutral single ping for anything uncategorized
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      playTone(740, ctx.currentTime, 0.16, 'sine', 0.14);
+    }
 
     // Haptic Feedback Vibration Helper
     function triggerVibration(pattern = [150, 80, 150]) {
@@ -1375,8 +1547,22 @@
       }
 
       if (type === 'levelup') playLevelUpFanfare();
-      else alarmChime.play().catch(() => {});
-      triggerVibration([250, 100, 250, 100, 300]);
+      else if (type === 'achievement') playAchievementChime();
+      else if (type === 'punishment') playPunishmentAlarm();
+      else if (type === 'water') playWaterChime();
+      else if (type === 'quest') playXpChime();
+      else if (type === 'alarm') alarmChime.play().catch(() => {});
+      else playGeneralPing();
+
+      const vibePatterns = {
+        levelup: [250, 100, 250, 100, 300],
+        achievement: [100, 60, 100, 60, 100],
+        punishment: [400, 150, 400],
+        water: [100],
+        quest: [80, 50, 80],
+        alarm: [250, 100, 250, 100, 300]
+      };
+      triggerVibration(vibePatterns[type] || [200]);
 
       let iconUrl = AURA_ICON_DATA_URI;
       let notifTag = "general-notification";
@@ -1525,6 +1711,41 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
       const i = appState.activeDayIndex || 0;
       return (i >= 0 && i < days.length) ? i : 0;
     }
+    // Finds which day-row in a program matches TODAY's real-world weekday.
+    // Day labels across the 30 plans come in several shapes ("Monday",
+    // "Mon / Thu", "Monday & Friday", "Day 1".."Day 7", or non-day rows like
+    // "2-3×/week"), so this checks the current weekday's 3-letter abbreviation
+    // against the label first, then falls back to a "Day N" convention
+    // (Monday=1..Sunday=7), and finally just index 0.
+    function findTodayDayIndex(days) {
+      if (!days || !days.length) return 0;
+      const jsDay = new Date().getDay(); // 0=Sun..6=Sat
+      const isoWeekday = jsDay === 0 ? 7 : jsDay; // Mon=1..Sun=7
+      const weekdayNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+      const abbrev = weekdayNames[jsDay].slice(0, 3); // e.g. "sun"
+
+      let idx = days.findIndex(d => d.day && d.day.toLowerCase().includes(abbrev));
+      if (idx !== -1) return idx;
+
+      idx = days.findIndex(d => {
+        const m = d.day && d.day.match(/day\s*(\d+)/i);
+        return m && parseInt(m[1], 10) === isoWeekday;
+      });
+      if (idx !== -1) return idx;
+
+      return 0;
+    }
+    // Re-syncs the selected day tab to today whenever the calendar date has
+    // rolled over since the last check, without fighting a manual tab pick
+    // made earlier the same day.
+    function syncActiveDayToToday() {
+      const todayStr = new Date().toDateString();
+      if (appState.lastDayAutoSync !== todayStr) {
+        appState.activeDayIndex = findTodayDayIndex(currentProgramDays());
+        appState.lastDayAutoSync = todayStr;
+        syncToFirebase();
+      }
+    }
     // "Exercise Name — 4×8-10" -> {name, sets}
     function parseExercise(str) {
       const parts = str.split(" — ");
@@ -1540,7 +1761,169 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
       return "cat-push";
     }
 
-    // ---- "Find My Plan" quiz — Q&A matcher across all 30 programs ----
+    // ---- Muscle-group tracking → feeds the Strength Constellation radar chart ----
+    const MUSCLE_GROUPS = ["chest", "back", "shoulders", "arms", "legs", "core"];
+    const MUSCLE_TIERS = ["Bronze", "Silver", "Gold", "Ruby", "Diamond", "Platinum"];
+    const MUSCLE_TIER_COLORS = { Bronze: "#cd7f32", Silver: "#c0c0c0", Gold: "#ffd700", Ruby: "#e0115f", Diamond: "#4fd8e0", Platinum: "#e5e4e2" };
+    const MUSCLE_POINTS_PER_STEP = 20; // volume needed per sub-level (18 sub-levels total across 6 tiers)
+
+    function muscleGroupFor(name) {
+      const n = name.toLowerCase();
+      if (/squat|lunge|leg press|leg extension|leg curl|calf|hip thrust|glute|bulgarian|hack squat/.test(n)) return "legs";
+      if (/plank|crunch|core|ab wheel|hanging|l-sit|dragon flag|sit-up/.test(n)) return "core";
+      if (/row|pulldown|pull-up|pull up|deadlift|shrug|straight arm|chin-up/.test(n)) return "back";
+      if (/shoulder|lateral raise|arnold|rear delt|delt fly|upright row|face pull|twist press/.test(n)) return "shoulders";
+      if (/curl|triceps|skull crusher|dips?\b|wrist|forearm/.test(n)) return "arms";
+      if (/bench|chest|fly|pec deck|push-?up/.test(n)) return "chest";
+      return "core";
+    }
+    // Sub-level index 0-17 across the 6 tiers (3 sub-levels each, "III"→"I" as it rises).
+    function muscleLevelIndex(points) {
+      return Math.min(17, Math.floor((points || 0) / MUSCLE_POINTS_PER_STEP));
+    }
+    function muscleTierInfo(points) {
+      const idx = muscleLevelIndex(points);
+      const tier = MUSCLE_TIERS[Math.floor(idx / 3)];
+      const sub = 3 - (idx % 3); // III, II, I
+      const pctInStep = Math.min(100, Math.round((((points || 0) % MUSCLE_POINTS_PER_STEP) / MUSCLE_POINTS_PER_STEP) * 100));
+      return { idx, tier, sub, label: `${tier} ${["", "I", "II", "III"][sub]}`, color: MUSCLE_TIER_COLORS[tier], pctInStep, pctOverall: Math.round((idx / 17) * 100) };
+    }
+
+    // ---- Generic SVG radar/spider chart (used for the Strength Constellation) ----
+    function renderSpiderChart(containerId, labels, values100, opts = {}) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      const n = labels.length;
+      const size = opts.size || 260;
+      const cx = size / 2, cy = size / 2, maxR = size * 0.36;
+      const angleFor = i => -Math.PI / 2 + (i * 2 * Math.PI) / n;
+      const ptAt = (i, fracR) => {
+        const a = angleFor(i);
+        return [cx + Math.cos(a) * maxR * fracR, cy + Math.sin(a) * maxR * fracR];
+      };
+
+      let rings = "";
+      [0.25, 0.5, 0.75, 1].forEach(f => {
+        const pts = labels.map((_, i) => ptAt(i, f).join(",")).join(" ");
+        rings += `<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>`;
+      });
+      let axes = "";
+      labels.forEach((_, i) => {
+        const [x, y] = ptAt(i, 1);
+        axes += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;
+      });
+      const dataPts = values100.map((v, i) => ptAt(i, Math.max(0.04, v / 100)));
+      const dataPolygon = dataPts.map(p => p.join(",")).join(" ");
+      let dots = "";
+      dataPts.forEach(([x, y], i) => {
+        dots += `<circle cx="${x}" cy="${y}" r="4" fill="${opts.dotColors ? opts.dotColors[i] : '#22d3ee'}" stroke="#0a0e16" stroke-width="1.5"/>`;
+      });
+      let labelEls = "";
+      labels.forEach((lab, i) => {
+        const [x, y] = ptAt(i, 1.22);
+        labelEls += `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" class="spider-label">${lab}</text>`;
+      });
+
+      el.innerHTML = `
+        <svg viewBox="0 0 ${size} ${size}" class="spider-svg">
+          ${rings}${axes}
+          <polygon points="${dataPolygon}" fill="rgba(34,211,238,0.22)" stroke="#22d3ee" stroke-width="2" class="spider-fill"/>
+          ${dots}
+          ${labelEls}
+        </svg>`;
+    }
+
+    function renderBodygraph() {
+      const el = document.getElementById("bodygraphSpider");
+      if (!el) return;
+      const mv = appState.muscleVolume || {};
+      const infos = MUSCLE_GROUPS.map(g => muscleTierInfo(mv[g] || 0));
+      renderSpiderChart(
+        "bodygraphSpider",
+        MUSCLE_GROUPS.map(g => g[0].toUpperCase() + g.slice(1)),
+        infos.map(i => i.pctOverall),
+        { dotColors: infos.map(i => i.color) }
+      );
+
+      const overallIdx = Math.round(infos.reduce((a, i) => a + i.idx, 0) / infos.length);
+      const overallTier = MUSCLE_TIERS[Math.floor(overallIdx / 3)];
+      const overallSub = 3 - (overallIdx % 3);
+      const badge = document.getElementById("bodygraphOverallBadge");
+      if (badge) {
+        badge.innerText = `${overallTier} ${["", "I", "II", "III"][overallSub]}`;
+        badge.style.color = MUSCLE_TIER_COLORS[overallTier];
+        badge.style.borderColor = MUSCLE_TIER_COLORS[overallTier] + "80";
+      }
+
+      const list = document.getElementById("bodygraphList");
+      if (list) {
+        list.innerHTML = MUSCLE_GROUPS.map((g, i) => {
+          const info = infos[i];
+          const name = g[0].toUpperCase() + g.slice(1);
+          return `
+            <div class="muscle-row">
+              <div class="muscle-row-top">
+                <span class="muscle-row-name">${name}</span>
+                <span class="muscle-row-tier" style="color:${info.color}">${info.label}</span>
+              </div>
+              <div class="muscle-row-bar"><div class="muscle-row-fill" style="width:${info.pctInStep}%; background:${info.color}"></div></div>
+            </div>`;
+        }).join("");
+      }
+    }
+
+    // ---- Avatar (preset icon or user-uploaded photo) ----
+    const AVATAR_ICONS = ["fa-user-ninja", "fa-dragon", "fa-skull", "fa-fire", "fa-bolt", "fa-crown", "fa-shield-halved", "fa-khanda", "fa-hat-wizard", "fa-mask"];
+    function renderAvatar() {
+      const inner = appState.profilePhoto
+        ? `<img src="${appState.profilePhoto}" class="avatar-img"/>`
+        : `<i class="fa-solid ${appState.avatarIcon || 'fa-user-ninja'}"></i>`;
+      document.querySelectorAll(".avatar-slot").forEach(slot => { slot.innerHTML = inner; });
+
+      const grid = document.getElementById("avatarIconGrid");
+      if (grid) {
+        grid.innerHTML = AVATAR_ICONS.map(ic => `
+          <button onclick="selectAvatarIcon('${ic}')" class="avatar-icon-opt ${(!appState.profilePhoto && appState.avatarIcon === ic) ? 'active' : ''}">
+            <i class="fa-solid ${ic}"></i>
+          </button>`).join("");
+      }
+    }
+    function selectAvatarIcon(icon) {
+      appState.avatarIcon = icon;
+      appState.profilePhoto = null;
+      syncToFirebase();
+      renderAvatar();
+      triggerVibration([60]);
+    }
+    function triggerAvatarUpload() {
+      document.getElementById("avatarFileInput").click();
+    }
+    function handleAvatarUpload(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          const size = 256;
+          const canvas = document.createElement("canvas");
+          canvas.width = size; canvas.height = size;
+          const ctx2d = canvas.getContext("2d");
+          const scale = Math.max(size / img.width, size / img.height);
+          const w = img.width * scale, h = img.height * scale;
+          ctx2d.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+          appState.profilePhoto = canvas.toDataURL("image/jpeg", 0.85);
+          syncToFirebase();
+          renderAvatar();
+          triggerVibration([60, 40, 60]);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      input.value = "";
+    }
+
+
     const QUIZ_QUESTIONS = [
       { key: "goal", title: "What's your main goal right now?", options: [
         { label: "Cut / Fat Loss", value: "cut" },
@@ -1645,7 +2028,8 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
     function applyProgram(id) {
       if (!PROGRAMS[id]) return;
       appState.activeProgram = id;
-      appState.activeDayIndex = 0;
+      appState.activeDayIndex = findTodayDayIndex(PROGRAMS[id].days);
+      appState.lastDayAutoSync = new Date().toDateString();
       syncToFirebase();
       closeProgramQuiz();
       renderActiveProgramCard();
@@ -1653,6 +2037,216 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
       renderDietPage();
       triggerVibration([80, 40, 80]);
     }
+    // ==================================================================
+    // ONBOARDING WIZARD — first-run only, condensed "Hunter Calibration"
+    // (gender → focus areas → body → equipment → workout days → analyzing
+    // → stat reveal). Feeds gender/focusAreas/height/weight/equipment/
+    // workoutDaysPref + a flavor-only rpgStats block used nowhere critical.
+    // ==================================================================
+    let onboardState = null;
+    const OB_FOCUS_OPTIONS = ["Full Body", "Chest", "Back", "Arms", "Shoulders", "Abs", "Legs", "Glutes"];
+    const OB_EQUIPMENT_OPTIONS = ["None (Bodyweight)", "Full Gym", "Barbells", "Dumbbells", "Kettlebells", "Machines"];
+    const OB_DAY_OPTIONS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    function maybeShowOnboarding() {
+      if (appState.onboardingComplete) return;
+      onboardState = { step: 0, gender: null, focusAreas: [], heightCm: 175, weightKg: 70, equipment: [], workoutDays: [] };
+      renderOnboardStep();
+      document.getElementById("onboardingOverlay").classList.add("show");
+    }
+    function skipOnboarding() {
+      appState.onboardingComplete = true;
+      syncToFirebase();
+      document.getElementById("onboardingOverlay").classList.remove("show");
+    }
+    function obUpdateProgress() {
+      const totalInteractiveSteps = 5; // gender, focus, body, equipment, days
+      const pct = Math.min(100, Math.round((onboardState.step / totalInteractiveSteps) * 100));
+      const bar = document.getElementById("obProgressBar");
+      if (bar) bar.style.width = pct + "%";
+    }
+    function obNext() { onboardState.step++; renderOnboardStep(); }
+    function obSetGender(g) { onboardState.gender = g; obNext(); }
+    function obToggleMulti(arr, val) {
+      const i = arr.indexOf(val);
+      if (i === -1) arr.push(val); else arr.splice(i, 1);
+      renderOnboardStep();
+    }
+    function obSetBody(field, val) {
+      onboardState[field] = parseFloat(val) || 0;
+    }
+
+    function renderOnboardStep() {
+      const body = document.getElementById("onboardBody");
+      obUpdateProgress();
+      const s = onboardState.step;
+
+      if (s === 0) {
+        body.innerHTML = `
+          <div class="ob-step ob-step-center">
+            <div class="ob-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h2 class="ob-title">Welcome, Hunter</h2>
+            <p class="ob-sub">A few quick questions to calibrate your starting profile — then we'll reveal your stats.</p>
+            <button class="ob-continue" onclick="obNext()">Get Started</button>
+          </div>`;
+      } else if (s === 1) {
+        body.innerHTML = `
+          <div class="ob-step">
+            <span class="ob-eyebrow">Step 1 of 5</span>
+            <h2 class="ob-title">Choose your gender</h2>
+            <div class="ob-options">
+              <button class="ob-opt" onclick="obSetGender('male')"><i class="fa-solid fa-mars"></i> Male</button>
+              <button class="ob-opt" onclick="obSetGender('female')"><i class="fa-solid fa-venus"></i> Female</button>
+              <button class="ob-opt" onclick="obSetGender('other')"><i class="fa-solid fa-venus-mars"></i> Other</button>
+            </div>
+          </div>`;
+      } else if (s === 2) {
+        body.innerHTML = `
+          <div class="ob-step">
+            <span class="ob-eyebrow">Step 2 of 5</span>
+            <h2 class="ob-title">Choose your focus areas</h2>
+            <div class="ob-options ob-options-grid">
+              ${OB_FOCUS_OPTIONS.map(o => `
+                <button class="ob-opt ob-opt-check ${onboardState.focusAreas.includes(o) ? 'active' : ''}" onclick="obToggleMulti(onboardState.focusAreas, '${o}')">
+                  ${o} ${onboardState.focusAreas.includes(o) ? '<i class=\"fa-solid fa-check\"></i>' : ''}
+                </button>`).join("")}
+            </div>
+            <button class="ob-continue" ${onboardState.focusAreas.length ? '' : 'disabled'} onclick="obNext()">Continue</button>
+          </div>`;
+      } else if (s === 3) {
+        body.innerHTML = `
+          <div class="ob-step">
+            <span class="ob-eyebrow">Step 3 of 5</span>
+            <h2 class="ob-title">Height &amp; weight</h2>
+            <div class="ob-input-row">
+              <label>Height (cm)</label>
+              <input type="number" class="ob-input" value="${onboardState.heightCm}" oninput="obSetBody('heightCm', this.value)">
+            </div>
+            <div class="ob-input-row">
+              <label>Weight (kg)</label>
+              <input type="number" class="ob-input" value="${onboardState.weightKg}" oninput="obSetBody('weightKg', this.value)">
+            </div>
+            <button class="ob-continue" onclick="obNext()">Continue</button>
+          </div>`;
+      } else if (s === 4) {
+        body.innerHTML = `
+          <div class="ob-step">
+            <span class="ob-eyebrow">Step 4 of 5</span>
+            <h2 class="ob-title">What equipment do you have access to?</h2>
+            <div class="ob-options">
+              ${OB_EQUIPMENT_OPTIONS.map(o => `
+                <button class="ob-opt ob-opt-check ${onboardState.equipment.includes(o) ? 'active' : ''}" onclick="obToggleMulti(onboardState.equipment, '${o}')">
+                  ${o} ${onboardState.equipment.includes(o) ? '<i class=\"fa-solid fa-check\"></i>' : ''}
+                </button>`).join("")}
+            </div>
+            <button class="ob-continue" ${onboardState.equipment.length ? '' : 'disabled'} onclick="obNext()">Continue</button>
+          </div>`;
+      } else if (s === 5) {
+        body.innerHTML = `
+          <div class="ob-step">
+            <span class="ob-eyebrow">Step 5 of 5</span>
+            <h2 class="ob-title">Set your workout days</h2>
+            <div class="ob-day-row">
+              ${OB_DAY_OPTIONS.map(d => `
+                <button class="ob-day-chip ${onboardState.workoutDays.includes(d) ? 'active' : ''}" onclick="obToggleMulti(onboardState.workoutDays, '${d}')">${d}</button>`).join("")}
+            </div>
+            <button class="ob-continue" ${onboardState.workoutDays.length ? '' : 'disabled'} onclick="obNext()">Continue</button>
+          </div>`;
+      } else if (s === 6) {
+        renderOnboardAnalyzing();
+      } else {
+        renderOnboardStats();
+      }
+    }
+
+    function renderOnboardAnalyzing() {
+      const body = document.getElementById("onboardBody");
+      const checklist = ["Physical Attributes", "Fitness Level", "Power Calibration", "Rank Calibration", "Workout Generation"];
+      body.innerHTML = `
+        <div class="ob-step ob-step-center">
+          <div class="ob-analyzing-pct" id="obPct">0%</div>
+          <p class="ob-sub">Calibrating your Hunter profile…</p>
+          <div class="ob-analyzing-list" id="obChecklist">
+            ${checklist.map(c => `<div class="ob-check-row" data-c="${c}"><i class="fa-regular fa-circle"></i> ${c}</div>`).join("")}
+          </div>
+        </div>`;
+      let pct = 0;
+      const rows = document.querySelectorAll("#obChecklist .ob-check-row");
+      const stepPct = 100 / rows.length;
+      let rowIdx = 0;
+      const iv = setInterval(() => {
+        pct = Math.min(100, pct + 4);
+        document.getElementById("obPct").innerText = pct + "%";
+        if (pct >= (rowIdx + 1) * stepPct && rowIdx < rows.length) {
+          rows[rowIdx].classList.add("done");
+          rows[rowIdx].querySelector("i").className = "fa-solid fa-circle-check";
+          rowIdx++;
+        }
+        if (pct >= 100) {
+          clearInterval(iv);
+          setTimeout(() => { onboardState.step++; renderOnboardStep(); }, 400);
+        }
+      }, 70);
+    }
+
+    function computeRpgStats() {
+      const s = onboardState;
+      const heightFactor = Math.max(0, Math.round(((s.heightCm || 170) - 150) / 12));
+      const weightFactor = Math.max(0, Math.round(((s.weightKg || 65) - 50) / 12));
+      const equipBonus = Math.min(4, s.equipment.length);
+      const focusBonus = Math.min(4, s.focusAreas.length);
+      const daysBonus = Math.min(4, s.workoutDays.length);
+      return {
+        vitality: 10 + daysBonus + heightFactor,
+        recovery: 10 + daysBonus + (s.gender === "female" ? 1 : 0),
+        strength: 10 + equipBonus + weightFactor,
+        agility: 10 + focusBonus + Math.max(0, 4 - weightFactor)
+      };
+    }
+    function renderOnboardStats() {
+      const stats = computeRpgStats();
+      onboardState.rpgStats = stats;
+      const body = document.getElementById("onboardBody");
+      const rows = [
+        ["Vitality", stats.vitality, "fa-heart-pulse", "#f87171"],
+        ["Recovery", stats.recovery, "fa-bed", "#22d3ee"],
+        ["Strength", stats.strength, "fa-dumbbell", "#fbbf24"],
+        ["Agility", stats.agility, "fa-person-running", "#4ade80"]
+      ];
+      body.innerHTML = `
+        <div class="ob-step ob-step-center">
+          <span class="ob-eyebrow">Analysis Complete</span>
+          <h2 class="ob-title">Your Starting Stats</h2>
+          <div class="ob-stats-grid">
+            ${rows.map(([label, val, icon, color]) => `
+              <div class="ob-stat-card">
+                <i class="fa-solid ${icon}" style="color:${color}"></i>
+                <div class="ob-stat-val" style="color:${color}">${val}</div>
+                <div class="ob-stat-label">${label}</div>
+              </div>`).join("")}
+          </div>
+          <button class="ob-continue" onclick="obFinish()">Start My Journey</button>
+        </div>`;
+    }
+    function obFinish() {
+      appState.gender = onboardState.gender;
+      appState.focusAreas = onboardState.focusAreas;
+      appState.heightCm = onboardState.heightCm;
+      appState.weightKg = onboardState.weightKg;
+      appState.equipment = onboardState.equipment;
+      appState.workoutDaysPref = onboardState.workoutDays;
+      appState.rpgStats = onboardState.rpgStats;
+      appState.onboardingComplete = true;
+      syncToFirebase();
+      document.getElementById("onboardingOverlay").classList.remove("show");
+      triggerVibration([100, 50, 100, 50, 200]);
+      confetti({ particleCount: 80, spread: 100, origin: { y: 0.4 } });
+      // Nice hand-off: they just told us their focus/equipment — help them
+      // pick a matching training plan right away.
+      setTimeout(() => openProgramQuiz(), 500);
+    }
+
+
     function renderActiveProgramCard() {
       const p = currentProgram();
       const el = document.getElementById("activeProgramCard");
@@ -1801,10 +2395,25 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
       // Fresh-UI additions
       activeProgram: "home_workout_ppl",
       activeDayIndex: 0,
+      lastDayAutoSync: null,
       lifetimeXP: 0,
       workoutSessionsCompleted: 0,
       totalMatrixPointsCache: 0,
-      unlockedAchievements: []
+      unlockedAchievements: [],
+      // Avatar
+      avatarIcon: "fa-user-ninja",
+      profilePhoto: null,
+      // Muscle-group tracking (feeds the Strength Constellation radar chart)
+      muscleVolume: { chest: 0, back: 0, shoulders: 0, arms: 0, legs: 0, core: 0 },
+      // Onboarding wizard results
+      onboardingComplete: false,
+      gender: null,
+      focusAreas: [],
+      heightCm: null,
+      weightKg: null,
+      equipment: [],
+      workoutDaysPref: [],
+      rpgStats: { vitality: 10, recovery: 10, strength: 10, agility: 10 }
     };
 
     let quoteIdx = 0;
@@ -2150,7 +2759,7 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
 
         card.innerHTML = `
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+            <div data-quest-key="${key}" class="quest-check w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
               done ? 'bg-cyan-500 text-slate-950' : 'bg-white/5 border border-white/10 text-cyan-400'
             }">
               <i class="fa-solid ${done ? 'fa-check' : q.icon}"></i>
@@ -2180,6 +2789,12 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
       updateLineCharts();
       if (!wasDone) {
         awardXP(quest.xp, quest.name);
+        // Bouncy pop feedback on the checkbox that was just ticked.
+        const el = document.querySelector(`[data-quest-key="${key}"]`);
+        if (el) {
+          el.classList.add("just-checked");
+          setTimeout(() => el.classList.remove("just-checked"), 400);
+        }
       } else {
         // Undoing an accidental tick — give the XP back instead of leaving
         // level/XP inflated.
@@ -2457,6 +3072,7 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
 
       renderMatrix();
       renderSleepGrid();
+      syncActiveDayToToday();
       renderActiveProgramCard();
       renderWorkoutList();
       renderDietPage();
@@ -2464,6 +3080,9 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
       renderCustomReminders();
       renderHunterPanel();
       renderDailyQuests();
+      renderBodygraph();
+      renderAvatar();
+      maybeShowOnboarding();
       updateLineCharts();
     }
 
@@ -2476,12 +3095,17 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
       stats: "Analytics",
       profile: "Profile"
     };
+    const PAGE_ORDER = ["home", "quests", "diet", "rank", "stats", "profile"];
     let currentPage = "home";
     function showPage(page) {
+      const fromIdx = PAGE_ORDER.indexOf(currentPage);
+      const toIdx = PAGE_ORDER.indexOf(page);
+      const dirClass = toIdx >= fromIdx ? "dir-fwd" : "dir-back";
       currentPage = page;
-      document.querySelectorAll(".app-page").forEach(p => p.classList.remove("active"));
+
+      document.querySelectorAll(".app-page").forEach(p => p.classList.remove("active", "dir-fwd", "dir-back"));
       const target = document.getElementById("page-" + page);
-      if (target) target.classList.add("active");
+      if (target) { target.classList.add(dirClass); target.classList.add("active"); }
 
       document.querySelectorAll(".bn-btn").forEach(b => b.classList.toggle("active", b.dataset.page === page));
       document.querySelectorAll(".side-nav-link").forEach(b => b.classList.toggle("active", b.dataset.page === page));
@@ -2518,6 +3142,13 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
         const allCompleted = todaysExIds.length === 0 || todaysExIds.every(id => appState.exerciseStatus[id]);
         if (currentHHMM === "22:00" && !allCompleted && !appState.isPunishmentMode) {
           triggerPunishmentMode();
+        }
+
+        // If the app is left open across midnight, jump the day tab forward
+        // to the new day automatically instead of waiting for a reload.
+        if (currentHHMM === "00:00") {
+          syncActiveDayToToday();
+          renderWorkoutList();
         }
       }
       tick();
@@ -2939,9 +3570,21 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
       // the "full session" bonus exactly once per transition — and can
       // reverse it cleanly if the last exercise gets un-ticked.
       const wasAllDone = ids.length > 0 && ids.every(id => appState.exerciseStatus[id]);
-      appState.exerciseStatus[exId] = !appState.exerciseStatus[exId];
+      const nowDone = !appState.exerciseStatus[exId];
+      appState.exerciseStatus[exId] = nowDone;
       triggerVibration([120, 60, 120]);
+
+      // Feed the Strength Constellation radar — same award/revoke symmetry
+      // as XP, so undoing a tick never leaves phantom muscle volume behind.
+      const exIdx = parseInt(exId.split("_e")[1], 10);
+      const exStr = day.exercises[exIdx];
+      if (exStr) {
+        const group = muscleGroupFor(parseExercise(exStr).name);
+        if (!appState.muscleVolume) appState.muscleVolume = { chest: 0, back: 0, shoulders: 0, arms: 0, legs: 0, core: 0 };
+        appState.muscleVolume[group] = Math.max(0, (appState.muscleVolume[group] || 0) + (nowDone ? 10 : -10));
+      }
       syncToFirebase();
+      renderBodygraph();
 
       const allDone = ids.every(id => appState.exerciseStatus[id]);
       if (allDone && !wasAllDone) {
@@ -2998,12 +3641,13 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
       renderDemoHex();
       document.getElementById("exerciseDemoOverlay").classList.add("show");
     }
-    function renderDemoHex() {
+    function renderDemoHex(justLoggedIdx = -1) {
       const wrap = document.getElementById("demoHexRow");
       let html = "";
       for (let i = 0; i < demoState.setsTotal; i++) {
         const done = i < demoState.setsLogged;
-        html += `<div class="demo-hex ${done ? 'done' : ''}">${done ? '✓' : i + 1}</div>`;
+        const fresh = i === justLoggedIdx ? "just-logged" : "";
+        html += `<div class="demo-hex ${done ? 'done' : ''} ${fresh}">${done ? '✓' : i + 1}</div>`;
       }
       wrap.innerHTML = html;
       const btn = document.getElementById("demoLogSetBtn");
@@ -3017,9 +3661,10 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
     }
     function logDemoSet() {
       if (demoState.setsLogged >= demoState.setsTotal) return;
+      const justIdx = demoState.setsLogged;
       demoState.setsLogged++;
       triggerVibration([60]);
-      renderDemoHex();
+      renderDemoHex(justIdx);
       if (demoState.setsLogged >= demoState.setsTotal) {
         if (!appState.exerciseStatus || !appState.exerciseStatus[demoState.exId]) {
           toggleSingleExercise(demoState.exId);
@@ -3035,11 +3680,13 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
     function checkAchievements() {
       if (!appState.unlockedAchievements) appState.unlockedAchievements = [];
       let changed = false;
+      const justUnlocked = [];
       ACHIEVEMENTS.forEach(a => {
         const already = appState.unlockedAchievements.includes(a.id);
         if (!already && a.check(appState)) {
           appState.unlockedAchievements.push(a.id);
           changed = true;
+          justUnlocked.push(a.id);
           showAchievementToast(a.name);
           confetti({ particleCount: 70, spread: 90, origin: { y: 0.3 }, colors: ['#fbbf24', '#22d3ee', '#ffffff'] });
           triggerVibration([100, 60, 100]);
@@ -3047,16 +3694,17 @@ const PROGRAMS = {"strength_ppl": {"id": "strength_ppl", "category": "template",
         }
       });
       if (changed) syncToFirebase();
-      renderAchievements();
+      renderAchievements(justUnlocked);
     }
-    function renderAchievements() {
+    function renderAchievements(justUnlocked = []) {
       const el = document.getElementById("achievementsGrid");
       if (!el) return;
       const unlocked = appState.unlockedAchievements || [];
       el.innerHTML = ACHIEVEMENTS.map(a => {
         const done = unlocked.includes(a.id);
+        const fresh = justUnlocked.includes(a.id);
         return `
-          <div class="ach-card ${done ? 'done' : ''}">
+          <div class="ach-card ${done ? 'done' : ''} ${fresh ? 'just-unlocked' : ''}">
             <div class="ach-icon"><i class="fa-solid ${done ? a.icon : 'fa-lock'}"></i></div>
             <div class="ach-name">${a.name}</div>
             <div class="ach-desc">${a.desc}</div>
